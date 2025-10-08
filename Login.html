@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burger House - Login</title>
+
+  <!-- Fonte -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #0b0b0b;
+      --card: #F6E9BE;
+      --text: #1a1a1a;
+      --muted: #6c6c6c;
+      --green: #1B8E3E;
+      --green-press: #157333;
+      --input-bg: #ffffff;
+      --input-border: #dadada;
+      --shadow: 0 10px 30px rgba(0,0,0,.30);
+      --radius-lg: 24px;
+      --radius-md: 12px;
+      --error: #C9302C;
+    }
+
+    *{ box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+
+    body{
+      font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: var(--bg) url("Burger-House_ - Copia.png") left center no-repeat fixed;
+      background-size: 60%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding-left: 80px;   /* controla distância da esquerda */
+      padding-right: 80px;  /* controla distância da direita */
+    }
+
+    .card{
+      width: 500px;
+      background: var(--card);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      padding: 40px 36px 44px;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .title{
+      margin: 10px 0 14px; text-align:center;
+      font-weight: 700; font-size: 26px;
+    }
+    .desc{
+      margin: 0 auto 24px; max-width: 400px; text-align:center; line-height: 1.5;
+      font-size: 16px; color: var(--text);
+    }
+
+    .form{ margin-top: 14px; }
+    .field{
+      display:block; width:100%;
+      background: var(--input-bg);
+      border: 1.5px solid var(--input-border);
+      height: 48px; border-radius: var(--radius-md);
+      padding: 0 18px; font-size: 16px;
+      outline: none; transition: box-shadow .2s, border-color .2s;
+    }
+    .field + .field{ margin-top: 16px; }
+    .field::placeholder{ color:#b5b5b5; font-weight: 500; }
+    .field:focus{ border-color:#bdbdbd; box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
+
+    .login-btn{
+      display:block; margin: 20px auto 0;
+      height: 48px; min-width: 160px; padding: 0 26px;
+      border-radius: 14px; border: 1.5px solid #cfcfcf;
+      background: #F3E3B0; cursor: pointer;
+      font-weight: 600; color:#1e1e1e; font-size: 16px;
+      box-shadow: 0 2px 0 rgba(0,0,0,.10) inset;
+      transition: transform .02s ease-in, filter .15s;
+    }
+    .login-btn:active{ transform: translateY(1px); }
+
+    .forgot{ margin-top: 14px; text-align:center; font-size: 14px; color:#9c9c9c; }
+    .forgot a{ color:#7b7b7b; text-decoration: underline; }
+
+    .cta{
+      display:flex; align-items:center; justify-content:center;
+      gap: 12px; width:100%; height: 52px; margin-top: 22px;
+      border: none; border-radius: 14px; background: var(--green); color: #fff;
+      font-weight: 700; cursor:pointer; letter-spacing:.2px; font-size:16px;
+      transition: background .15s ease-in-out, transform .02s ease-in;
+    }
+    .cta:active{ transform: translateY(1px); }
+    .cta:hover{ background: var(--green-press); }
+
+    .chev{ width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,.15); display:grid; place-items:center; }
+    .chev svg{ width: 18px; height:18px; display:block; }
+
+    .top-pad{ height: 8px; }
+
+    /* Mensagem de erro inline */
+    .error{ margin-top:8px; text-align:center; font-size: 14px; color: var(--error); font-weight: 600; display:none; }
+
+    /* Overlay de sucesso */
+    .overlay{ position:fixed; inset:0; background: rgba(0,0,0,.60); display:none; align-items:center; justify-content:center; z-index: 50; }
+    .modal{
+      background:#fff; border-radius:12px; padding:18px 22px; min-width: 340px; text-align:center; box-shadow: 0 20px 60px rgba(0,0,0,.35);
+      font-size:14px; color:#2b2b2b; position: relative;
+    }
+    .modal h3{ margin:0 0 6px; font-size:16px; font-weight:700; }
+    .modal p{ margin:0; color:#444; }
+    .modal .ok{ position:absolute; right:10px; top:10px; width:18px; height:18px; border-radius:50%; background:#e9e9e9; display:grid; place-items:center; font-weight:700; }
+  </style>
+</head>
+<body>
+  <section class="card" role="region" aria-label="Área de login Burger House">
+    <div class="top-pad" aria-hidden="true"></div>
+    <h1 class="title">Bem-vindo à Burger House!</h1>
+    <p class="desc">
+      Aqui, cada mordida é uma explosão de sabor!<br>
+      Na Burger House, acreditamos que o hambúrguer é uma arte, e nossa missão é proporcionar uma experiência única para todos os amantes de um bom lanche.
+    </p>
+
+    <form id="loginForm" class="form" action="#" method="post" novalidate>
+      <input class="field" id="telefone" type="tel" placeholder="Telefone" name="telefone" autocomplete="tel" />
+      <input class="field" id="senha" type="password" placeholder="Senha" name="senha" autocomplete="current-password" />
+      <button type="submit" class="login-btn">Login</button>
+      <div id="errorMsg" class="error">Login não localizado, tente novamente.</div>
+    </form>
+
+    <div class="forgot">Esqueceu a senha? <a href="#">Clique aqui</a></div>
+
+    <button class="cta" type="button" aria-label="Ver Cardápio">
+      <span>Ver Cardapio</span>
+      <span class="chev" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </button>
+  </section>
+
+  <!-- Overlay de sucesso -->
+  <div id="overlay" class="overlay" role="dialog" aria-modal="true" aria-live="assertive">
+    <div class="modal">
+      <div class="ok">✓</div>
+      <h3>Login realizado com sucesso</h3>
+      <p>Você será redirecionado para a página principal.</p>
+    </div>
+  </div>
+
+  <script>
+    // Configuração de credenciais fake para demonstração.
+    // Troque por sua lógica real de autenticação.
+    const VALID_PHONE = '11999999999';
+    const VALID_PASS  = '123456';
+
+    const form = document.getElementById('loginForm');
+    const tel  = document.getElementById('telefone');
+    const pwd  = document.getElementById('senha');
+    const errorMsg = document.getElementById('errorMsg');
+    const overlay  = document.getElementById('overlay');
+
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      errorMsg.style.display = 'none';
+
+      const phone = (tel.value || '').trim();
+      const pass  = (pwd.value || '').trim();
+
+      // Regra de exemplo: valida contra credenciais fake
+      const isValid = phone === VALID_PHONE && pass === VALID_PASS;
+
+      if(isValid){
+        // Sucesso: mostra overlay e redireciona
+        overlay.style.display = 'flex';
+        setTimeout(()=>{
+          // Redirecionamento de exemplo
+          window.location.href = '#/home';
+        }, 1800);
+      } else {
+        // Erro: mostra mensagem abaixo do botão
+        errorMsg.style.display = 'block';
+        // foco no campo senha para tentar novamente
+        pwd.focus();
+      }
+    });
+  </script>
+</body>
+</html>
