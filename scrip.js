@@ -15,7 +15,7 @@ function adicionarCarrinho(preco) {
   atualizarSubtotal();
 }
 
-// Abre modal de detalhes do lanche
+// Abre modal do produto
 function abrirDetalhes(nome, descricao, preco) {
   lancheAtual = nome;
   descricaoAtual = descricao;
@@ -30,11 +30,9 @@ function abrirDetalhes(nome, descricao, preco) {
   new bootstrap.Modal(document.getElementById('detalhesModal')).show();
 }
 
-// Verifica login
+// Verifica login antes de adicionar
 function verificarLogin() {
-  const modalDetalhes = bootstrap.Modal.getInstance(document.getElementById('detalhesModal'));
-  modalDetalhes.hide();
-
+  bootstrap.Modal.getInstance(document.getElementById('detalhesModal')).hide();
   if (!usuarioLogado) {
     new bootstrap.Modal(document.getElementById('loginModal')).show();
   } else {
@@ -42,7 +40,7 @@ function verificarLogin() {
   }
 }
 
-// Login simples
+// Simula login
 function fazerLogin() {
   const usuario = document.getElementById('usuario').value;
   const senha = document.getElementById('senha').value;
@@ -74,7 +72,7 @@ function confirmarEndereco() {
   alert('Lanche adicionado e pedido criado com sucesso!');
 }
 
-// Gera número de pedido sequencial
+// Cria número de pedido sequencial
 function gerarNumeroPedido() {
   const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
   return pedidos.length ? pedidos[pedidos.length - 1].numero + 1 : 100;
@@ -100,7 +98,7 @@ function calcularFrete() {
   alert(`Frete calculado: R$ ${frete.toFixed(2)}`);
 }
 
-// Cupom de desconto
+// Cupom
 function aplicarCupom() {
   const cupom = document.getElementById('cupom').value;
   if (cupom === "KOHLL10") {
@@ -113,10 +111,38 @@ function aplicarCupom() {
   }
 }
 
-// Filtro de produtos
+// Filtro de categorias
 function filtrar(categoria) {
   const produtos = document.querySelectorAll('.produto');
   produtos.forEach(prod => {
     prod.style.display = (categoria === 'all' || prod.dataset.categoria === categoria) ? 'block' : 'none';
   });
 }
+
+// Abre pop-up do carrinho (corrigido)
+function abrirCarrinho() {
+  if (subtotal === 0) {
+    alert('Seu carrinho está vazio.');
+    return;
+  }
+  alert(`Total do carrinho: R$ ${subtotal.toFixed(2)}\nFinalize seu pedido na aba "Pedidos".`);
+}
+// 🔍 FILTRO DE PESQUISA PELO NOME DO PRODUTO
+document.addEventListener('DOMContentLoaded', () => {
+  const campoBusca = document.querySelector('header input[type="text"]');
+  if (!campoBusca) return;
+
+  campoBusca.addEventListener('input', () => {
+    const termo = campoBusca.value.toLowerCase();
+    const produtos = document.querySelectorAll('.produto');
+
+    produtos.forEach(prod => {
+      const nome = prod.querySelector('h5')?.textContent.toLowerCase() || '';
+      if (nome.includes(termo) || termo === '') {
+        prod.style.display = 'block';
+      } else {
+        prod.style.display = 'none';
+      }
+    });
+  });
+});
