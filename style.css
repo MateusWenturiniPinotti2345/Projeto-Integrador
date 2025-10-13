@@ -31,3 +31,10 @@ footer {
 .btn-warning:hover {
   background-color: #e65c00;
 }
+/* Ajuste das imagens dos lanches na lista */
+.list-group-item img {
+  width: 90px;         /* tamanho fixo e proporcional */
+  height: 90px;        /* mantém o formato quadrado */
+  object-fit: cover;   /* corta a imagem sem distorcer */
+  border-radius: 10px; /* cantos levemente arredondados */
+}
