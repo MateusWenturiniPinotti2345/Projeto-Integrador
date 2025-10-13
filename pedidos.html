@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meus Pedidos - Hamburgueria</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<header class="bg-dark text-white p-3 d-flex justify-content-between align-items-center">
+  <div class="d-flex align-items-center w-100">
+    <input type="text" class="form-control me-3" placeholder="Buscar pedido..." style="max-width: 400px;">
+    <nav class="ms-auto">
+      <a href="telapedidos.html" class="text-white me-3">Início</a>
+      <a href="pedidos.html" class="text-white me-3 fw-bold text-decoration-underline">Pedidos</a>
+      <a href="#" class="text-white">Perfil</a>
+    </nav>
+  </div>
+</header>
+
+<!-- Conteúdo principal -->
+<div class="container mt-3">
+  <h4 class="mb-4 text-center">Meus Pedidos</h4>
+
+  <ul class="list-group shadow-sm" id="listaPedidos"></ul>
+</div>
+
+<!-- Rodapé -->
+<footer class="bg-dark text-white text-center py-3 mt-4">
+  <p class="mb-0">© 2025 Hamburgueria. Todos os direitos reservados.</p>
+</footer>
+
+<!-- Modal Detalhes do Pedido -->
+<div class="modal fade" id="detalhesPedidoModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="tituloPedido"></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="corpoPedido"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Carrega pedidos salvos do localStorage
+  const pedidos = JSON.parse(localStorage.getItem('pedidos')) || [];
+  const lista = document.getElementById('listaPedidos');
+
+  if (pedidos.length === 0) {
+    lista.innerHTML = `<li class="list-group-item text-center text-muted">Nenhum pedido encontrado.</li>`;
+  } else {
+    pedidos.forEach(p => {
+      const li = document.createElement('li');
+      li.className = 'list-group-item d-flex justify-content-between align-items-center pedido';
+      li.style.cursor = 'pointer';
+      li.innerHTML = `
+        <div>
+          <strong>Pedido #${p.numero}</strong><br>
+          <small>${p.data}</small>
+        </div>
+        <span class="badge ${p.status === 'Entregue' ? 'bg-success' : p.status === 'Cancelado' ? 'bg-secondary' : 'bg-warning text-dark'}">${p.status}</span>
+      `;
+      li.onclick = () => abrirDetalhesPedido(p);
+      lista.appendChild(li);
+    });
+  }
+
+  function abrirDetalhesPedido(pedido) {
+    document.getElementById("tituloPedido").textContent = `Pedido #${pedido.numero}`;
+    const corpo = `
+      <p><strong>Data:</strong> ${pedido.data}</p>
+      <p><strong>Status:</strong> ${pedido.status}</p>
+      <p><strong>Endereço:</strong> ${pedido.endereco}</p>
+      <hr>
+      <h6>Itens:</h6>
+      <ul class="list-group mb-3">
+        ${pedido.itens.map(i => `
+          <li class="list-group-item d-flex justify-content-between">
+            <span>${i.qtd}x ${i.nome}</span>
+            <span>R$ ${(i.qtd * i.valor).toFixed(2)}</span>
+          </li>
+        `).join('')}
+      </ul>
+      <p class="fw-bold">Total: R$ ${pedido.total.toFixed(2)}</p>
+    `;
+    document.getElementById("corpoPedido").innerHTML = corpo;
+    new bootstrap.Modal(document.getElementById("detalhesPedidoModal")).show();
+  }
+</script>
+</body>
+</html>
