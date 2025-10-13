@@ -3,6 +3,14 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+header input[type="text"] {
+  max-width: 400px;
+}
+
+footer {
+  font-size: 0.9rem;
+}
+
 .list-group-item {
   cursor: pointer;
   transition: all 0.3s ease;
@@ -14,27 +22,19 @@ body {
   transform: scale(1.02);
 }
 
-.card {
+/* Imagens dos produtos */
+.produto-img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
   border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
 }
 
-footer {
-  font-size: 0.9rem;
-}
-
+/* Botões */
 .btn-warning {
   background-color: #ff6600;
   border: none;
 }
-
 .btn-warning:hover {
   background-color: #e65c00;
-}
-/* Ajuste das imagens dos lanches na lista */
-.list-group-item img {
-  width: 90px;         /* tamanho fixo e proporcional */
-  height: 90px;        /* mantém o formato quadrado */
-  object-fit: cover;   /* corta a imagem sem distorcer */
-  border-radius: 10px; /* cantos levemente arredondados */
 }
