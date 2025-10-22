@@ -1,239 +1,190 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Burger House - Login</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cadastro produto</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0d0d; /* o que falta para deixar o meu html mais aproximado da foto */
+  --muted:#7d7d7d;
+  --line:#dcdcdc;
+  --panel:#ffffff;
+  --bg:#ffffff;
+  --green:#16a34a;
+  --amber:#f5a623;
+  --red:#d32f2f;
+}
 
-  <!-- Fonte -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg)}
 
-  <style>
-    :root{
-      --bg: #0b0b0b;
-      --card: #F6E9BE;
-      --text: #1a1a1a;
-      --muted: #6c6c6c;
-      --green: #1B8E3E;
-      --green-press: #157333;
-      --input-bg: #ffffff;
-      --input-border: #dadada;
-      --shadow: 0 10px 30px rgba(0,0,0,.30);
-      --radius-lg: 24px;
-      --radius-md: 12px;
-      --error: #C9302C;
-      --amber: #F6B64A;
-    }
+.wrapper{max-width:1100px;margin:28px auto;padding:0 18px}
+.h1{font-size:34px;font-weight:800;letter-spacing:-0.3px;margin:0 0 18px}
 
-    *{ box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
+.frame{
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:#fff;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,.04);
+}
 
-    body{
-      font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      /* imagem de fundo (ajustada para a esquerda e reduzida) */
-      background: var(--bg) url("Burger-House_ - Copia.png") left center no-repeat fixed;
-      background-size: 60%;
-      display: flex; align-items: center; justify-content: center;
-      padding-left: 80px; padding-right: 80px; /* controle dos dois lados */
-    }
+.topbar{
+  background:#000; height:54px; display:flex; align-items:center; justify-content:space-between; padding:0 18px;
+}
 
-    .card{
-      width: 500px; background: var(--card); border-radius: var(--radius-lg);
-      box-shadow: var(--shadow); padding: 40px 36px 44px; position: relative; margin: 0 auto;
-    }
+.hamb{
+  width:42px;height:34px;border:1px solid #2b2b2b;border-radius:8px;background:#0a0a0a;display:grid;place-items:center;
+}
+.hamb span,.hamb:before,.hamb:after{content:"";display:block;width:18px;height:2px;border-radius:2px;background:#fff}
+.hamb:before{transform:translateY(-6px)}
+.hamb:after{transform:translateY(6px)}
 
-    .title{ margin: 10px 0 14px; text-align:center; font-weight: 700; font-size: 26px; }
-    .desc{ margin: 0 auto 24px; max-width: 400px; text-align:center; line-height: 1.5; font-size: 16px; color: var(--text); }
+.top-actions{display:flex;align-items:center;gap:12px}
+.badge{color:#fff;font-size:11px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.badge .switch{scale:.9}
 
-    .form{ margin-top: 14px; }
-    .field{ display:block; width:100%; background: var(--input-bg); border: 1.5px solid var(--input-border); height: 48px; border-radius: var(--radius-md); padding: 0 18px; font-size: 16px; outline: none; transition: box-shadow .2s, border-color .2s; }
-    .field + .field{ margin-top: 16px; }
-    .field::placeholder{ color:#b5b5b5; font-weight: 500; }
-    .field:focus{ border-color:#bdbdbd; box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
+.switch{display:inline-block}
+.switch input{display:none}
+.switch .track{width:52px;height:28px;border-radius:999px;background:#e7e7e7;border:1px solid #cfcfcf;position:relative;display:inline-block;vertical-align:middle}
+.switch .knob{width:22px;height:22px;border-radius:999px;background:#fff;position:absolute;top:2.5px;left:2.5px;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:left .18s ease}
+.switch input:checked + .track{background:#bfe7cc;border-color:#bfe7cc}
+.switch input:checked + .track .knob{left:27px;background:#fff}
 
-    .login-btn{ display:block; margin: 20px auto 0; height: 48px; min-width: 160px; padding: 0 26px; border-radius: 14px; border: 1.5px solid #cfcfcf; background: #F3E3B0; cursor: pointer; font-weight: 600; color:#1e1e1e; font-size: 16px; box-shadow: 0 2px 0 rgba(0,0,0,.10) inset; transition: transform .02s ease-in, filter .15s; }
-    .login-btn:active{ transform: translateY(1px); }
+.card{padding:22px}
 
-    .forgot{ margin-top: 14px; text-align:center; font-size: 14px; color:#9c9c9c; }
-    .forgot a{ color:#7b7b7b; text-decoration: underline; }
-    .linkline{ margin-top: 10px; text-align:center; font-size: 14px; }
-    .linkline a{ color:#2b5bff; text-decoration: underline; font-weight:600; }
+.card-head{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; margin-bottom:16px;}
+.card-title{grid-column:2; text-align:center; font-weight:800; font-size:20px}
+.head-right{grid-column:3; justify-self:end; display:flex; align-items:center; gap:12px; font-weight:700}
 
-    .cta{ display:flex; align-items:center; justify-content:center; gap: 12px; width:100%; height: 52px; margin-top: 22px; border: none; border-radius: 14px; background: var(--green); color: #fff; font-weight: 700; cursor:pointer; letter-spacing:.2px; font-size:16px; transition: background .15s ease-in-out, transform .02s ease-in; }
-    .cta:active{ transform: translateY(1px); }
-    .cta:hover{ background: var(--green-press); }
-    .chev{ width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,.15); display:grid; place-items:center; }
-    .chev svg{ width: 18px; height:18px; display:block; }
-    .top-pad{ height: 8px; }
+.body-grid{display:grid; grid-template-columns: 1.1fr 0.9fr; gap:22px}
 
-    /* Mensagem de erro no login */
-    .error{ margin-top:8px; text-align:center; font-size: 14px; color: var(--error); font-weight: 600; display:none; }
+.seclabel{font-size:12.5px;font-weight:800;color:#1f1f1f;margin:14px 0 8px}
 
-    /* Overlays (sucesso e cadastro) */
-    .overlay{ position:fixed; inset:0; background: rgba(0,0,0,.60); display:none; align-items:center; justify-content:center; z-index: 50; }
-    .modal{ background:#fff; border-radius:12px; padding:18px 22px; min-width: 340px; text-align:center; box-shadow: 0 20px 60px rgba(0,0,0,.35); font-size:14px; color:#2b2b2b; position: relative; }
-    .modal h3{ margin:0 0 6px; font-size:16px; font-weight:700; }
-    .modal p{ margin:0; color:#444; }
-    .modal .ok{ position:absolute; right:10px; top:10px; width:18px; height:18px; border-radius:50%; background:#e9e9e9; display:grid; place-items:center; font-weight:700; }
+.input, .select, .textarea{width:100%; border:1px solid var(--line); border-radius:10px; background:#fff; font-size:14px; color:#1b1b1b;}
+.input{height:36px; padding:0 12px}
+.select{height:36px; padding:0 36px 0 12px; appearance:none; background:#fff url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="9" viewBox="0 0 14 9"><path d="M1 1l6 6 6-6" stroke="%23888" stroke-width="2" fill="none" stroke-linecap="round"/></svg>') no-repeat right 12px center;}
+.textarea{height:96px; padding:10px 12px; resize:none; line-height:1.3}
+.hint{display:flex;justify-content:flex-end;color:#9a9a9a;font-size:12px;margin-top:4px}
 
-    /* Modal de cadastro */
-    .signup{ width: 520px; max-width: 92vw; background:#ffffff; border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,.45); padding: 22px 24px 26px; color:#2b2b2b; position:relative; }
-    .signup h3{ margin:0 0 6px; text-align:center; font-size:14px; letter-spacing:.6px; font-weight:800; }
-    .signup p.lead{ margin:0 0 14px; text-align:center; font-size:12.5px; color:#666; }
-    .sgrid{ display:grid; gap: 10px; }
-    .sfield{ height: 40px; border-radius: 10px; border:1.4px solid #d7d7d7; padding: 0 12px; font-size:14px; outline:none; background:#fff; }
-    .sfield::placeholder{ color:#b5b5b5; }
-    .sfield:focus{ border-color:#bfbfbf; box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
-    .sfield.invalid{ border-color: var(--error); background:#fff3f3; }
-    .shelp{ font-size:12px; color:var(--error); margin-top:-6px; display:none; }
-    .shelp.show{ display:block; }
-    .btn-amber{ margin-top: 10px; width:100%; height: 40px; border:none; border-radius: 10px; background: var(--amber); color:#1a1a1a; font-weight:700; cursor:pointer; }
-    .btn-amber:active{ transform: translateY(1px); }
-    .xclose{ position:absolute; right:10px; top:10px; width:24px; height:24px; border-radius:999px; display:grid; place-items:center; background:#efefef; cursor:pointer; font-weight:800; text-decoration:none; color:#333; }
-  </style>
+.row2{display:grid; grid-template-columns:1fr 180px; gap:10px}
+
+.add-list{margin-top:6px;display:grid;gap:8px}
+.add{display:grid;grid-template-columns:22px auto auto;gap:8px; align-items:center}
+.ck{width:20px;height:20px;border-radius:5px;border:1px solid #9fd0a9;background:#eaf7ee;display:grid;place-items:center;color:#1B8E3E;font-weight:800;line-height:1}
+.price{font-weight:600;color:#333}
+.add-new{display:flex;align-items:center;gap:8px;margin-top:6px;font-weight:700}
+.add-new .plus{width:18px;height:18px;border-radius:50%;border:2px solid #111;display:grid;place-items:center;line-height:0}
+
+.linklike{ background:none; border:none; padding:0; margin:0; cursor:pointer; font: inherit; color:#111; font-weight:800; }
+
+.add-form{margin-top:8px; display:grid; grid-template-columns: 1fr 140px auto auto; gap:8px; align-items:center;}
+.mini-input{height:34px; border:1px solid var(--line); border-radius:10px; padding:0 10px; font-size:14px; background:#fff;}
+.btn-sm{height:34px; padding:0 12px; border-radius:10px; border:1px solid #cfcfcf; background:#fff; font-weight:700; cursor:pointer;}
+.btn-sm.ghost{ background:#f5f5f5; }
+
+.right{display:grid;grid-template-rows:auto 1fr;gap:10px;align-items:start}
+.pic-wrap{ justify-self:end; border:none; background:transparent; box-shadow:none; padding:0 }
+.pic-wrap img{width:260px; height:auto; object-fit:contain}
+
+.footer{display:flex;justify-content:flex-end;gap:12px;margin-top:16px;padding-top:16px;border-top:1px solid var(--line)}
+.btn{height:36px;padding:0 16px;border-radius:8px;border:1px solid #cfcfcf;background:#fff;cursor:pointer;font-weight:800}
+.btn-amber{background:var(--amber);border-color:transparent;color:#1c1c1c}
+.btn-red{background:var(--red);border-color:transparent;color:#fff}
+.btn:hover{filter:brightness(.98)}
+.btn:disabled{opacity:.5}
+
+@media (max-width: 940px){.body-grid{grid-template-columns:1fr}.pic-wrap{justify-self:start}}
+</style>
 </head>
 <body>
-  <section class="card" role="region" aria-label="Área de login Burger House">
-    <div class="top-pad" aria-hidden="true"></div>
-    <h1 class="title">Bem-vindo à Burger House!</h1>
-    <p class="desc">
-      Aqui, cada mordida é uma explosão de sabor!<br>
-      Na Burger House, acreditamos que o hambúrguer é uma arte, e nossa missão é proporcionar uma experiência única para todos os amantes de um bom lanche.
-    </p>
+  <div class="wrapper">
+    <div class="h1">Cadastro produto</div>
+    <div class="frame">
+      <div class="topbar">
+        <div class="hamb" aria-label="Menu" role="button"><span></span></div>
+        <div class="top-actions">
+          <div class="badge">
+            <label class="switch"><input type="checkbox" checked><span class="track"><span class="knob"></span></span></label>
+            <div style="opacity:.9">Aberto</div>
+          </div>
+          <div style="width:34px;height:34px;border-radius:8px;background:#111;display:grid;place-items:center;color:#fff;font-size:14px">🔔</div>
+          <div style="width:34px;height:34px;border-radius:8px;background:#111;display:grid;place-items:center;color:#fff;font-size:14px">👤</div>
+          <div style="width:34px;height:34px;border-radius:8px;background:#111;display:grid;place-items:center;color:#fff;font-size:14px">ⓘ</div>
+        </div>
+      </div>
 
-    <form id="loginForm" class="form" action="#" novalidate>
-      <input class="field" id="telefone" type="tel" placeholder="Telefone" name="telefone" autocomplete="tel" />
-      <input class="field" id="senha" type="password" placeholder="Senha" name="senha" autocomplete="current-password" />
-      <button type="submit" class="login-btn">Login</button>
-      <div id="errorMsg" class="error">Login não localizado, tente novamente.</div>
-    </form>
+      <div class="card">
+        <div class="card-head">
+          <div></div>
+          <div class="card-title">Bem-vindo Cadastro Produto!</div>
+          <div class="head-right">
+            <span>Disponível</span>
+            <label class="switch"><input type="checkbox" checked><span class="track"><span class="knob"></span></span></label>
+          </div>
+        </div>
 
-    <div class="forgot">Esqueceu a senha? <a href="#">Clique aqui</a></div>
-    <div class="linkline">Não tem conta? <a href="#" id="openSignup">Criar conta</a></div>
+        <div class="body-grid">
+          <div>
+            <div class="seclabel">Informações do Produto</div>
+            <input class="input" type="text" placeholder="Nome do Produto">
+            <div style="height:10px"></div>
+            <textarea class="textarea" placeholder="Descrição"></textarea>
+            <div class="hint">0/600</div>
 
-    <button class="cta" type="button" aria-label="Ver Cardápio">
-      <span>Ver Cardapio</span>
-      <span class="chev" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 6l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
-    </button>
-  </section>
+            <div style="height:4px"></div>
+            <div class="row2">
+              <select class="select"><option>Lanches</option><option>Bebidas</option><option>Sobremesas</option></select>
+              <input class="input" type="text" placeholder="Preço">
+            </div>
 
-  <!-- Overlay: sucesso do login -->
-  <div id="loginOk" class="overlay" aria-hidden="true">
-    <div class="modal">
-      <div class="ok">✓</div>
-      <h3>Login realizado com sucesso</h3>
-      <p>Você será redirecionado para a página principal.</p>
+            <div style="height:14px"></div>
+            <div class="seclabel">Adicionais/Personalizações</div>
+            <div class="add-list" id="addList"><em class="empty" style="color:#777">Nenhum adicional cadastrado</em></div>
+
+            <div class="add-new"><span class="plus">+</span> <button id="btnAdd" type="button" class="linklike">Adicionar novo adicional</button></div>
+
+            <div id="addForm" class="add-form" hidden>
+              <input id="addName" class="mini-input" type="text" placeholder="Nome do adicional">
+              <input id="addPrice" class="mini-input" type="text" inputmode="decimal" placeholder="Preço (ex.: 3,00)">
+              <button id="addConfirm" type="button" class="btn-sm">Adicionar</button>
+              <button id="addCancel"  type="button" class="btn-sm ghost">Cancelar</button>
+            </div>
+
+            <div style="height:16px"></div>
+            <div class="seclabel">Estoque e Disponibilidade</div>
+            <input class="input" type="text" placeholder="Tempo de preparo estimado">
+          </div>
+
+          <div class="right">
+            <div></div>
+            <div class="pic-wrap"><img src="burger foto.png" alt="Hambúrguer"></div>
+          </div>
+        </div>
+
+        <div class="footer">
+          <button class="btn" type="button">Cancelar</button>
+          <button class="btn btn-amber" type="button">Pré-visualizar</button>
+          <button class="btn btn-red" type="button">Salvar o Produto</button>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Modal: cadastro -->
-  <div id="signupOverlay" class="overlay" role="dialog" aria-modal="true">
-    <div class="signup">
-      <a class="xclose" href="#" id="closeSignup" aria-label="Fechar">×</a>
-      <h3>CRIAR CONTA</h3>
-      <p class="lead">Preencha os campos abaixo para criar sua conta e continuar.</p>
-      <form id="signupForm" class="sgrid" action="#" novalidate>
-        <input class="sfield" id="snome" type="text" name="nome" placeholder="Nome completo" required>
-        <input class="sfield" id="stel" type="tel" name="telefone" placeholder="Telefone" required>
-        <div id="stelHelp" class="shelp">O telefone preenchido está incorreto.</div>
-        <input class="sfield" id="semail" type="email" name="email" placeholder="E-mail" required>
-        <input class="sfield" id="ssenha" type="password" name="senha" placeholder="Senha" minlength="6" required>
-        <button class="btn-amber" type="submit">Continuar</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Overlay: sucesso do cadastro -->
-  <div id="signupOk" class="overlay" aria-hidden="true">
-    <div class="modal">
-      <div class="ok">✓</div>
-      <h3>Seu cadastro foi realizado com sucesso.</h3>
-      <p>Você será redirecionado para a página principal.</p>
-    </div>
-  </div>
-
-  <script>
-    // ====== Login ======
-    const VALID_PHONE = '11999999999';
-    const VALID_PASS  = '123456';
-
-    const loginForm = document.getElementById('loginForm');
-    const tel = document.getElementById('telefone');
-    const pwd = document.getElementById('senha');
-    const errorMsg = document.getElementById('errorMsg');
-    const loginOk = document.getElementById('loginOk');
-
-    loginForm?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      errorMsg.style.display = 'none';
-      const ok = (tel.value||'').trim() === VALID_PHONE && (pwd.value||'').trim() === VALID_PASS;
-      if(ok){
-        loginOk.style.display = 'flex';
-        setTimeout(()=>{ loginOk.style.display = 'none'; /* window.location.href = '#/home'; */ }, 1800);
-      }else{
-        errorMsg.style.display = 'block';
-        pwd.focus();
-      }
-    });
-
-    // ====== Cadastro ======
-    const openSignup  = document.getElementById('openSignup');
-    const closeSignup = document.getElementById('closeSignup');
-    const signupOv    = document.getElementById('signupOverlay');
-    const signupForm  = document.getElementById('signupForm');
-    const signupOk    = document.getElementById('signupOk');
-    const stel        = document.getElementById('stel');
-    const stelHelp    = document.getElementById('stelHelp');
-
-    openSignup?.addEventListener('click', (e)=>{ e.preventDefault(); signupOv.style.display = 'flex'; });
-    closeSignup?.addEventListener('click', (e)=>{ e.preventDefault(); signupOv.style.display = 'none'; });
-    signupOv?.addEventListener('click', (e)=>{ if(e.target === signupOv) signupOv.style.display = 'none'; });
-
-    function maskPhone(v){
-      v = v.replace(/\D/g, '');
-      if(v.length > 11) v = v.slice(0,11);
-      if(v.length > 6){
-        return `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-      } else if(v.length > 2){
-        return `(${v.slice(0,2)}) ${v.slice(2)}`;
-      } else if(v.length > 0){
-        return `(${v}`;
-      }
-      return v;
-    }
-
-    stel?.addEventListener('input', ()=>{ stel.value = maskPhone(stel.value); });
-
-    function isValidBrPhone(text){
-      // (xx) xxxxx-xxxx
-      return /^\(\d{2}\) \d{5}-\d{4}$/.test(text);
-    }
-
-    signupForm?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const phone = (stel.value||'').trim();
-      const ok = isValidBrPhone(phone);
-      if(!ok){
-        stel.classList.add('invalid');
-        stelHelp.classList.add('show');
-        stel.focus();
-        return;
-      }
-      stel.classList.remove('invalid');
-      stelHelp.classList.remove('show');
-
-      // sucesso de cadastro
-      signupOv.style.display = 'none';
-      signupOk.style.display = 'flex';
-      setTimeout(()=>{ signupOk.style.display = 'none'; /* window.location.href = '#/home'; */ }, 1800);
-    });
-  </script>
+<script>
+const addList=document.getElementById('addList');const btnAdd=document.getElementById('btnAdd');const addForm=document.getElementById('addForm');const addName=document.getElementById('addName');const addPrice=document.getElementById('addPrice');const addConfirm=document.getElementById('addConfirm');const addCancel=document.getElementById('addCancel');
+btnAdd.addEventListener('click',()=>{addForm.hidden=false;addName.focus();});
+addCancel.addEventListener('click',()=>{addForm.hidden=true;addName.value='';addPrice.value='';});
+function parsePriceBR(str){if(!str)return NaN;str=String(str).replace(/[R$\s]/g,'').replace(/\./g,'').replace(',', '.');const n=Number(str);return Number.isFinite(n)?n:NaN;}
+function fmtBRL(v){return v.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});}
+function addAdditional(name,priceNum){const empty=addList.querySelector('.empty');if(empty)empty.remove();const el=document.createElement('div');el.className='add';el.innerHTML=`<div class="ck">✓</div><div>${name}</div><div class="price">+ ${fmtBRL(priceNum)}</div>`;addList.appendChild(el);}
+function submitAdditional(){const name=addName.value.trim();const priceNum=parsePriceBR(addPrice.value.trim());if(!name||!Number.isFinite(priceNum)){if(!name){addName.focus();return;}if(!Number.isFinite(priceNum)){addPrice.focus();return;}}addAdditional(name,priceNum);addName.value='';addPrice.value='';addForm.hidden=true;}
+addConfirm.addEventListener('click',submitAdditional);addForm.addEventListener('keydown',(e)=>{if(e.key==='Enter'){e.preventDefault();submitAdditional();}if(e.key==='Escape'){addCancel.click();}});
+</script>
 </body>
 </html>

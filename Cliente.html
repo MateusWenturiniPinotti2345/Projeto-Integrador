@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Clientes - Informações Cliente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0d0d;
+  --muted:#6f6f6f;
+  --line:#d9d9d9;
+  --panel:#ffffff;
+  --green:#16a34a;
+  --red:#d22f27;
+}
+
+/* base */
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink);background:#fff}
+
+/* page wrapper */
+.page{max-width:1160px;margin:22px auto 34px;padding:0 16px}
+.page h1{font-size:32px;font-weight:800;margin:0 0 16px}
+
+/* frame */
+.shell{border:1px solid var(--line);border-radius:6px;background:#fff;overflow:hidden}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  background:#000;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;
+}
+.hamb{width:44px;height:56px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.hamb span{width:26px;height:4px;background:#fff;border-radius:6px;display:block}
+.top-actions{display:flex;align-items:center;gap:16px}
+.status{display:flex;flex-direction:column;align-items:center;gap:4px}
+.switch{display:inline-block;line-height:0}
+.switch input{display:none}
+.switch .track{width:44px;height:22px;border-radius:999px;background:#1f1f1f;position:relative;border:1px solid rgba(255,255,255,.08)}
+.switch .knob{position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:999px;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.35)}
+.switch input:checked + .track{background:#07b35a}
+.switch input:checked + .track .knob{left:24px}
+.status small{color:#cfcfcf;font-size:11px}
+.icon{width:28px;height:28px;display:grid;place-items:center}
+.icon svg{width:22px;height:22px;display:block;color:#fff}
+.icon-bell{position:relative}
+.icon-bell::after{content:"";position:absolute;top:0;right:2px;width:7px;height:7px;background:#ff2d2d;border-radius:50%;box-shadow:0 0 0 1.5px #000}
+
+/* ===== CONTENT ===== */
+.card{padding:28px}
+
+/* header interno – avatar + título */
+.header{display:grid;grid-template-columns:220px 1fr;gap:12px;align-items:center;margin-bottom:10px;}
+.avatar{
+  width:130px;height:130px;border-radius:999px;border:6px solid #e7b75a;
+  overflow:hidden;display:flex;align-items:center;justify-content:center;background:#eee; margin-left:24px; cursor:pointer;
+}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.title{font-size:30px;font-weight:800}
+
+/* formulário */
+.form{max-width:560px;margin-left:220px}
+.label{font-size:12.6px;font-weight:800;margin:14px 0 6px}
+
+/* input com ícone à direita */
+.inp{position:relative}
+.input{
+  width:100%;height:36px;border:1px solid var(--line);border-radius:8px;background:#f9f9f9;
+  font-size:14px;color:#1f1f1f;padding:0 36px 0 12px;
+}
+.input::placeholder{color:#a7a7a7}
+.inp .ico{
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);width:22px;height:22px;display:grid;place-items:center;opacity:.9
+}
+
+/* linhas */
+.row2{display:grid;grid-template-columns: 1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns: 1fr 1fr 1fr;gap:12px}
+
+/* footer */
+.footer{display:flex;justify-content:flex-end;gap:12px;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.btn{height:36px;padding:0 18px;border-radius:8px;border:1px solid #cfcfcf;background:#fff;cursor:pointer;font-weight:700}
+.btn-red{background:var(--red);border-color:transparent;color:#fff}
+
+/* feedback/validação (será usado pelo JS) */
+.input.ok  { border-color:#16a34a !important; background:#f4fff6 !important; }
+.input.err { border-color:#d22f27 !important; background:#fff6f5 !important; }
+.js-help   { font-size:12px; color:#d22f27; margin-top:4px; }
+.inp .js-help{ position:static; transform:none; text-align:left; }
+
+/* toast */
+.toast{
+  position:fixed; left:50%; top:24px; transform:translateX(-50%);
+  background:#111; color:#fff; padding:10px 14px; border-radius:8px; z-index:9999;
+  box-shadow:0 8px 30px rgba(0,0,0,.25); font: 600 14px/1 Inter, system-ui, Arial;
+}
+
+/* responsive */
+@media (max-width:980px){
+  .header{grid-template-columns:1fr;gap:14px}
+  .form{margin-left:0;max-width:100%}
+  .avatar{margin-left:0}
+}
+</style>
+</head>
+<body>
+  <div class="page">
+    <h1>Clientes</h1>
+
+    <div class="shell">
+      <!-- Topbar -->
+      <div class="topbar">
+        <div class="hamb" aria-label="Menu"><span></span><span></span><span></span></div>
+        <div class="top-actions">
+          <div class="status" title="Status">
+            <label class="switch" aria-label="Aberto/Fechado">
+              <input type="checkbox" checked>
+              <span class="track"><span class="knob"></span></span>
+            </label>
+            <small>Aberto</small>
+          </div>
+          <div class="icon icon-bell" aria-label="Notificações">
+            <svg viewBox="0 0 24 24" fill="none">
+              <path d="M6 8a6 6 0 0 1 12 0c0 4 1.5 5.5 2 6H4c.5-.5 2-2 2-6Z" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M10 18a2 2 0 0 0 4 0" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="icon" aria-label="Perfil">
+            <svg viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="8" r="3.2" stroke="#fff" stroke-width="1.8"/>
+              <path d="M4.5 19c1.9-3 5-4.5 7.5-4.5S17.1 16 19 19" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <!-- header interno -->
+        <div class="header">
+          <label class="avatar" title="Trocar foto (clique)">
+            <img id="avatarImg" src="pessoa.webp" alt="Foto do cliente">
+            <input id="avatarFile" type="file" accept="image/*" style="display:none">
+          </label>
+          <div class="title">Informações Cliente</div>
+        </div>
+
+        <!-- formulário -->
+        <div class="form">
+          <div class="label">Nome</div>
+          <div class="inp">
+            <input class="input" id="nome" type="text" placeholder="Nome completo">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><circle cx="12" cy="8" r="3" stroke="#7b7b7b" stroke-width="1.5"/><path d="M5 19c2.2-3.1 5-4.2 7-4.2s4.8 1.1 7 4.2" stroke="#7b7b7b" stroke-width="1.5" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <div class="label">Telefone</div>
+          <div class="inp">
+            <input class="input" id="tel" type="tel" placeholder="(00) 00000-0000">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M6 3h3l1 5-2 1a12 12 0 0 0 6 6l1-2 5 1v3a2 2 0 0 1-2 2c-8.3 0-15-6.7-15-15A2 2 0 0 1 6 3Z" stroke="#2e7d32" stroke-width="1.7" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+
+          <div class="label">CPF</div>
+          <div class="inp">
+            <input class="input" id="cpf" type="text" placeholder="000.000.000-00">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#6b6b6b" stroke-width="1.6"/><circle cx="8.5" cy="12" r="2" stroke="#6b6b6b" stroke-width="1.6"/><path d="M13 10h6M13 13h6" stroke="#6b6b6b" stroke-width="1.6" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <div class="label">E-mail</div>
+          <div class="inp">
+            <input class="input" id="mail" type="email" placeholder="email@exemplo.com">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><rect x="3" y="6" width="18" height="12" rx="2" stroke="#6b6b6b" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="#6b6b6b" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </div>
+
+          <div class="label">Endereço</div>
+          <div class="inp">
+            <input class="input" id="rua" type="text" placeholder="Rua / Avenida">
+            <div class="ico">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z" stroke="#d32f2f" stroke-width="1.7" stroke-linejoin="round"/><circle cx="12" cy="10" r="2.2" stroke="#d32f2f" stroke-width="1.6"/></svg>
+            </div>
+          </div>
+
+          <div class="row2" style="margin-top:10px">
+            <input class="input" id="num" type="text" placeholder="Número">
+            <input class="input" id="comp" type="text" placeholder="Complemento">
+          </div>
+
+          <div class="row3" style="margin-top:10px">
+            <input class="input" id="bairro" type="text" placeholder="Bairro">
+            <input class="input" id="cidade" type="text" placeholder="Cidade">
+            <input class="input" id="uf" type="text" placeholder="UF">
+          </div>
+
+          <div class="footer">
+            <button class="btn" id="btnCancel">Cancelar</button>
+            <button class="btn btn-red" id="btnSave">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const $ = (sel, root = document) => root.querySelector(sel);
+
+  // campos
+  const nome   = $('#nome');
+  const tel    = $('#tel');
+  const cpf    = $('#cpf');
+  const mail   = $('#mail');
+  const rua    = $('#rua');
+  const num    = $('#num');
+  const comp   = $('#comp');
+  const bairro = $('#bairro');
+  const cidade = $('#cidade');
+  const uf     = $('#uf');
+
+  const btnSave   = $('#btnSave');
+  const btnCancel = $('#btnCancel');
+
+  // helpers de feedback
+  function showHelp(input, msg) {
+    const wrap = input.closest('.inp') || input.parentElement;
+    let help = wrap.querySelector('.js-help');
+    if (!help && msg) {
+      help = document.createElement('div');
+      help.className = 'js-help';
+      wrap.appendChild(help);
+    }
+    if (help) help.textContent = msg || '';
+  }
+  function setState(input, ok, msgIfError) {
+    input.classList.remove('ok','err');
+    showHelp(input, '');
+    if (ok === true) {
+      input.classList.add('ok');
+    } else if (ok === false) {
+      input.classList.add('err');
+      showHelp(input, msgIfError || 'Campo inválido.');
+    }
+    return ok;
+  }
+  function toast(msg, ok=true){
+    const t = document.createElement('div');
+    t.className = 'toast';
+    t.style.background = ok ? '#0f9d58' : '#c62828';
+    t.textContent = msg;
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(), 1800);
+  }
+
+  // máscara telefone
+  function maskPhone(v) {
+    v = v.replace(/\D/g, '').slice(0, 11);
+    if (v.length <= 10) {
+      return v.replace(/^(\d{0,2})/, '($1')
+              .replace(/^\((\d{2})(\d{0,4})/, '($1) $2')
+              .replace(/(\d{4})(\d{1,4})$/, '$1-$2');
+    } else {
+      return v.replace(/^(\d{0,2})/, '($1')
+              .replace(/^\((\d{2})(\d{0,5})/, '($1) $2')
+              .replace(/(\d{5})(\d{1,4})$/, '$1-$2');
+    }
+  }
+  function validPhone(v){ const d=v.replace(/\D/g,''); return d.length===10 || d.length===11; }
+  tel.addEventListener('input', ()=>{ tel.value = maskPhone(tel.value); tel.classList.remove('ok','err'); });
+  tel.addEventListener('blur', ()=> setState(tel, validPhone(tel.value), 'Telefone inválido.'));
+
+  // máscara + validação CPF
+  function maskCPF(v){
+    return v.replace(/\D/g,'').slice(0,11)
+            .replace(/(\d{3})(\d)/,'$1.$2')
+            .replace(/(\d{3})(\d)/,'$1.$2')
+            .replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+  }
+  function isValidCPF(cpf){
+    let s = cpf.replace(/\D/g,'');
+    if (!s || s.length!==11 || /^(\d)\1{10}$/.test(s)) return false;
+    let soma=0, resto;
+    for(let i=1;i<=9;i++) soma+=parseInt(s.substring(i-1,i))*(11-i);
+    resto=(soma*10)%11; if(resto===10||resto===11) resto=0;
+    if(resto!==parseInt(s.substring(9,10))) return false;
+    soma=0;
+    for(let i=1;i<=10;i++) soma+=parseInt(s.substring(i-1,i))*(12-i);
+    resto=(soma*10)%11; if(resto===10||resto===11) resto=0;
+    return resto===parseInt(s.substring(10,11));
+  }
+  cpf.addEventListener('input', ()=>{ cpf.value = maskCPF(cpf.value); cpf.classList.remove('ok','err'); });
+  cpf.addEventListener('blur', ()=> setState(cpf, isValidCPF(cpf.value), 'CPF inválido.'));
+
+  // email
+  function validEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+  mail.addEventListener('blur', ()=>{
+    if (mail.value.trim()===''){ mail.classList.remove('ok','err'); showHelp(mail,''); return; }
+    setState(mail, validEmail(mail.value), 'E-mail inválido.');
+  });
+
+  // UF duas letras
+  uf.addEventListener('input', ()=>{ uf.value = uf.value.replace(/[^a-zA-Z]/g,'').toUpperCase().slice(0,2); });
+
+  // Avatar upload/preview
+  const avatarImg  = document.getElementById('avatarImg');
+  const avatarFile = document.getElementById('avatarFile');
+  document.querySelector('.avatar').addEventListener('click', ()=> avatarFile.click());
+  avatarFile.addEventListener('change', ()=>{
+    const f = avatarFile.files && avatarFile.files[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = e => { avatarImg.src = e.target.result; };
+    reader.readAsDataURL(f);
+  });
+
+  // Cancelar
+  btnCancel.addEventListener('click', ()=>{
+    [nome,tel,cpf,mail,rua,num,comp,bairro,cidade,uf].forEach(i=>{
+      i.value=''; i.classList.remove('ok','err'); showHelp(i,'');
+    });
+  });
+
+  // Salvar
+  btnSave.addEventListener('click', ()=>{
+    const okNome  = setState(nome, nome.value.trim()!=='', 'Informe o nome.');
+    const okTel   = setState(tel,  validPhone(tel.value), 'Telefone inválido.');
+    const okCPF   = setState(cpf,  isValidCPF(cpf.value), 'CPF inválido.');
+    const okMail  = mail.value.trim()==='' ? true : setState(mail, validEmail(mail.value), 'E-mail inválido.');
+
+    const allOk = okNome && okTel && okCPF && okMail;
+    if (allOk) toast('Dados salvos com sucesso!', true);
+    else       toast('Corrija os campos destacados.', false);
+  });
+})();
+</script>
+</body>
+</html>
