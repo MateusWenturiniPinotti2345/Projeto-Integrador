@@ -1,0 +1,81 @@
+/* Transição de visualização do navegador */
+@view-transition {
+  navigation: auto;
+}
+
+/* Resets & utilidades locais */
+body {
+  box-sizing: border-box;
+}
+
+/* Animação ao entrar item no carrinho */
+.cart-item-enter {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Badge de status com leve pulsar */
+.status-badge {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+/* Mantém o comportamento original */
+body {
+  box-sizing: border-box;
+}
+
+/* Ajuste de navegação suave */
+@view-transition {
+  navigation: auto;
+}
+
+/* Kanban */
+.kanban-column {
+  min-height: 500px;
+}
+
+/* Cards */
+.order-card {
+  transition: all 0.3s ease;
+}
+.order-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Badges com pulso */
+.status-badge {
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.8; }
+}
+
+/* Entrada suave */
+.fade-in {
+  animation: fadeIn 0.5s ease-in;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
