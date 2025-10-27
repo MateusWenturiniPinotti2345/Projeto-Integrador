@@ -104,6 +104,35 @@ body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
 </style>
 </head>
 <body>
+  <header class="bg-black text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 py-4">
+          <div class="flex justify-between items-center">
+            <div>
+              <h1 id="restaurant-name" class="text-2xl font-bold">🍔 Burger House</h1>
+              <p class="text-red-100">Delivery rápido e saboroso!</p>
+            </div>
+            <div class="flex space-x-4">
+              <button id="menu-btn" class="text-white hover:text-gray-300 px-4 py-2 font-semibold transition-colors">
+                🏠 Cardápio
+              </button>
+              <button
+                id="cart-btn"
+                class="text-white hover:text-gray-300 px-4 py-2 font-semibold flex items-center space-x-2 transition-colors"
+              >
+                <span>🛒</span>
+                <span>Carrinho</span>
+                <span id="cart-count" class="bg-white text-black px-2 py-1 rounded-full text-sm">0</span>
+              </button>
+              <button id="orders-btn" class="text-white hover:text-gray-300 px-4 py-2 font-semibold transition-colors">
+                📋 Pedidos
+              </button>
+              <button id="profile-btn" class="text-white hover:text-gray-300 px-4 py-2 font-semibold transition-colors">
+                👤 Perfil
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
   <div class="wrapper">
     <div class="h1">Cadastro produto</div>
     <div class="frame">
@@ -189,5 +218,6 @@ addConfirm.addEventListener('click',submitAdditional);addForm.addEventListener('
 </script>
 </body>
 </html>
+
 
 
