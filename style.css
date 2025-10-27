@@ -1,40 +1,40 @@
+/* Transição de visualização do navegador */
+@view-transition {
+  navigation: auto;
+}
+
+/* Resets & utilidades locais */
 body {
-  background-color: #f8f9fa;
-  font-family: 'Poppins', sans-serif;
+  box-sizing: border-box;
 }
 
-header input[type="text"] {
-  max-width: 400px;
+/* Animação ao entrar item no carrinho */
+.cart-item-enter {
+  animation: slideIn 0.3s ease-out;
 }
 
-footer {
-  font-size: 0.9rem;
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.list-group-item {
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 8px;
+/* Badge de status com leve pulsar */
+.status-badge {
+  animation: pulse 2s infinite;
 }
 
-.list-group-item:hover {
-  background-color: #fff3cd;
-  transform: scale(1.02);
-}
-
-/* Imagens dos produtos */
-.produto-img {
-  width: 80px;
-  height: 80px;
-  object-fit: cover;
-  border-radius: 10px;
-}
-
-/* Botões */
-.btn-warning {
-  background-color: #ff6600;
-  border: none;
-}
-.btn-warning:hover {
-  background-color: #e65c00;
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
 }
