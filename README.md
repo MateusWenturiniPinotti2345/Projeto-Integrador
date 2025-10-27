@@ -6,4 +6,4 @@ https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/pedidos.html
 
 https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/perfil.html 
 
-https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/telapedidos.html
+https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/index.html
