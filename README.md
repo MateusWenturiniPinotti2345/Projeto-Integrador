@@ -1,5 +1,5 @@
-https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/Login.html 
+https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/login.html 
 
-https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/restaurante/index.html  
+https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/Restaurante/index.html  
 
 https://mateuswenturinipinotti2345.github.io/Projeto-Integrador/Restaurante/index.html
