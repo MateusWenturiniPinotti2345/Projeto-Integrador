@@ -1,241 +1,212 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Burger House - Login</title>
-<link rel="icon" type="image/png" href="fotos/diet.png">
-  <!-- Fonte -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg: #0b0b0b;
-      --card: #F6E9BE;
-      --text: #1a1a1a;
-      --muted: #6c6c6c;
-      --green: #1B8E3E;
-      --green-press: #157333;
-      --input-bg: #ffffff;
-      --input-border: #dadada;
-      --shadow: 0 10px 30px rgba(0,0,0,.30);
-      --radius-lg: 24px;
-      --radius-md: 12px;
-      --error: #C9302C;
-      --amber: #F6B64A;
+      --bg:#080808;--panel:#F9F1D3;--accent:#0f6b3e;--muted:#6b6b6b;--radius:28px;--input-radius:10px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial;background:var(--bg);color:#111}
+
+    /* Layout com a imagem ocupando mais espaço e painel deslocado à esquerda */
+    .stage{min-height:100vh;display:grid;grid-template-columns:50% 50%;align-items:center;justify-items:start;padding:40px;gap:32px}
+
+    /* Coluna da esquerda: imagem */
+    .left{
+      width:100%;
+      height:80vh;
+      border-radius:16px;
+      overflow:hidden;
+      box-shadow:0 30px 90px rgba(0,0,0,0.6);
+      background:url('Burger-House (1).png') center left/cover no-repeat;
+      position:relative;
+    }
+    .left::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.15) 60%)}
+
+    /* Painel da direita: mais próximo do centro visual */
+    .panel{
+      background:var(--panel);
+      width:380px;
+      max-width:90%;
+      border-radius:var(--radius);
+      padding:34px;
+      box-shadow:0 30px 80px rgba(0,0,0,0.5);
+      border:1px solid rgba(0,0,0,0.06);
+      position:relative;
+      transform:translateX(-60px);
+    }
+    .panel h2{text-align:center;margin-bottom:8px;font-size:20px;font-weight:800;color:#222}
+    .panel p{text-align:center;margin-bottom:18px;color:#333;font-size:13px;line-height:1.5}
+
+    form{display:flex;flex-direction:column;gap:12px}
+    .input{height:44px;border-radius:var(--input-radius);padding:0 14px;font-size:14px;border:1px solid rgba(0,0,0,0.12);background:#fff;box-shadow:inset 0 2px 6px rgba(0,0,0,0.04)}
+
+    .login-btn{height:44px;border-radius:12px;border:none;background:transparent;border:1px solid rgba(0,0,0,0.08);font-weight:700;cursor:pointer}
+
+    .social-row{display:flex;gap:10px;margin-top:6px}
+    .social{flex:1;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:700;cursor:pointer;border:1px solid rgba(0,0,0,0.06)}
+    .social-google{background:#fff;color:#444}
+    .social-fb{background:#1877F2;color:#fff}
+    .social svg{width:18px;height:18px}
+
+    .links{text-align:center;margin-top:8px;color:var(--muted);font-size:13px}
+    .links a{color:var(--accent);text-decoration:none;font-weight:600}
+
+    .cta{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:18px}
+    .cta-button{background:var(--accent);color:#fff;border:none;padding:12px 22px;border-radius:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:10px;box-shadow:0 14px 40px rgba(11,107,62,0.18)}
+    .create-account{background:#f2b749;color:#fff;border:none;padding:10px 18px;border-radius:12px;font-weight:700;cursor:pointer;box-shadow:0 12px 30px rgba(0,0,0,0.18)}
+
+    @media (max-width:980px){
+      .stage{grid-template-columns:1fr;justify-items:center;padding:28px}
+      .left{height:48vh;border-radius:12px}
+      .panel{transform:none;width:92%}
     }
 
-    *{ box-sizing: border-box; }
-    html, body { height: 100%; margin: 0; }
-
-    body{
-      font-family:'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color: var(--text);
-      /* imagem de fundo (ajustada para a esquerda e reduzida) */
-      background: var(--bg) url("Burger-House_ - Copia.png") left center no-repeat fixed;
-      background-size: 60%;
-      display: flex; align-items: center; justify-content: center;
-      padding-left: 80px; padding-right: 80px; /* controle dos dois lados */
-    }
-
-    .card{
-      width: 500px; background: var(--card); border-radius: var(--radius-lg);
-      box-shadow: var(--shadow); padding: 40px 36px 44px; position: relative; margin: 0 auto;
-    }
-
-    .title{ margin: 10px 0 14px; text-align:center; font-weight: 700; font-size: 26px; }
-    .desc{ margin: 0 auto 24px; max-width: 400px; text-align:center; line-height: 1.5; font-size: 16px; color: var(--text); }
-
-    .form{ margin-top: 14px; }
-    .field{ display:block; width:100%; background: var(--input-bg); border: 1.5px solid var(--input-border); height: 48px; border-radius: var(--radius-md); padding: 0 18px; font-size: 16px; outline: none; transition: box-shadow .2s, border-color .2s; }
-    .field + .field{ margin-top: 16px; }
-    .field::placeholder{ color:#b5b5b5; font-weight: 500; }
-    .field:focus{ border-color:#bdbdbd; box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
-
-    .login-btn{ display:block; margin: 20px auto 0; height: 48px; min-width: 160px; padding: 0 26px; border-radius: 14px; border: 1.5px solid #cfcfcf; background: #F3E3B0; cursor: pointer; font-weight: 600; color:#1e1e1e; font-size: 16px; box-shadow: 0 2px 0 rgba(0,0,0,.10) inset; transition: transform .02s ease-in, filter .15s; }
-    .login-btn:active{ transform: translateY(1px); }
-
-    .forgot{ margin-top: 14px; text-align:center; font-size: 14px; color:#9c9c9c; }
-    .forgot a{ color:#7b7b7b; text-decoration: underline; }
-    .linkline{ margin-top: 10px; text-align:center; font-size: 14px; }
-    .linkline a{ color:#2b5bff; text-decoration: underline; font-weight:600; }
-
-    .cta{ display:flex; align-items:center; justify-content:center; gap: 12px; width:100%; height: 52px; margin-top: 22px; border: none; border-radius: 14px; background: var(--green); color: #fff; font-weight: 700; cursor:pointer; letter-spacing:.2px; font-size:16px; transition: background .15s ease-in-out, transform .02s ease-in; }
-    .cta:active{ transform: translateY(1px); }
-    .cta:hover{ background: var(--green-press); }
-    .chev{ width: 26px; height: 26px; border-radius: 999px; background: rgba(255,255,255,.15); display:grid; place-items:center; }
-    .chev svg{ width: 18px; height:18px; display:block; }
-    .top-pad{ height: 8px; }
-
-    /* Mensagem de erro no login */
-    .error{ margin-top:8px; text-align:center; font-size: 14px; color: var(--error); font-weight: 600; display:none; }
-
-    /* Overlays (sucesso e cadastro) */
-    .overlay{ position:fixed; inset:0; background: rgba(0,0,0,.60); display:none; align-items:center; justify-content:center; z-index: 50; }
-    .modal{ background:#fff; border-radius:12px; padding:18px 22px; min-width: 340px; text-align:center; box-shadow: 0 20px 60px rgba(0,0,0,.35); font-size:14px; color:#2b2b2b; position: relative; }
-    .modal h3{ margin:0 0 6px; font-size:16px; font-weight:700; }
-    .modal p{ margin:0; color:#444; }
-    .modal .ok{ position:absolute; right:10px; top:10px; width:18px; height:18px; border-radius:50%; background:#e9e9e9; display:grid; place-items:center; font-weight:700; }
-
-    /* Modal de cadastro */
-    .signup{ width: 520px; max-width: 92vw; background:#ffffff; border-radius: 12px; box-shadow: 0 24px 80px rgba(0,0,0,.45); padding: 22px 24px 26px; color:#2b2b2b; position:relative; }
-    .signup h3{ margin:0 0 6px; text-align:center; font-size:14px; letter-spacing:.6px; font-weight:800; }
-    .signup p.lead{ margin:0 0 14px; text-align:center; font-size:12.5px; color:#666; }
-    .sgrid{ display:grid; gap: 10px; }
-    .sfield{ height: 40px; border-radius: 10px; border:1.4px solid #d7d7d7; padding: 0 12px; font-size:14px; outline:none; background:#fff; }
-    .sfield::placeholder{ color:#b5b5b5; }
-    .sfield:focus{ border-color:#bfbfbf; box-shadow: 0 0 0 3px rgba(0,0,0,.06); }
-    .sfield.invalid{ border-color: var(--error); background:#fff3f3; }
-    .shelp{ font-size:12px; color:var(--error); margin-top:-6px; display:none; }
-    .shelp.show{ display:block; }
-    .btn-amber{ margin-top: 10px; width:100%; height: 40px; border:none; border-radius: 10px; background: var(--amber); color:#1a1a1a; font-weight:700; cursor:pointer; }
-    .btn-amber:active{ transform: translateY(1px); }
-    .xclose{ position:absolute; right:10px; top:10px; width:24px; height:24px; border-radius:999px; display:grid; place-items:center; background:#efefef; cursor:pointer; font-weight:800; text-decoration:none; color:#333; }
+    /* Modal cadastro */
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;z-index:60}
+    .modal{background:#fff;border-radius:12px;padding:20px 22px;max-width:420px;width:92%;box-shadow:0 30px 80px rgba(0,0,0,0.5);transform:translateY(-8px);opacity:0;transition:all .22s ease}
+    .overlay.show{display:flex}.overlay.show .modal{transform:none;opacity:1}
+    .modal h3{text-align:center;margin:0 0 8px;font-size:16px}
+    .modal p{text-align:center;margin:0 0 14px;color:#555}
+    .modal form{display:flex;flex-direction:column;gap:10px}.modal .input{height:42px}
+    .close{position:absolute;right:12px;top:12px;background:#fff;border-radius:50%;width:32px;height:32px;display:grid;place-items:center;cursor:pointer;border:1px solid rgba(0,0,0,0.08)}
   </style>
 </head>
 <body>
-  <section class="card" role="region" aria-label="Área de login Burger House">
-    <div class="top-pad" aria-hidden="true"></div>
-    <h1 class="title">Bem-vindo à Burger House!</h1>
-    <p class="desc">
-      Aqui, cada mordida é uma explosão de sabor!<br>
-      Na Burger House, acreditamos que o hambúrguer é uma arte, e nossa missão é proporcionar uma experiência única para todos os amantes de um bom lanche.
-    </p>
+  <div class="stage" role="main">
+    <div class="left" aria-hidden="true"></div>
 
-    <form id="loginForm" class="form" action="#" novalidate>
-      <input class="field" id="telefone" type="tel" placeholder="Telefone" name="telefone" autocomplete="tel" />
-      <input class="field" id="senha" type="password" placeholder="Senha" name="senha" autocomplete="current-password" />
-      <button type="submit" class="login-btn">Login</button>
-      <div id="errorMsg" class="error">Login não localizado, tente novamente.</div>
-    </form>
+    <aside class="panel" aria-label="Login">
+      <h2>Bem-vindo à Burger House!</h2>
+      <p>Aqui, cada mordida é uma explosão de sabor! Na Burger House, acreditamos que o hambúrguer é uma arte. Faça seu login para continuar.</p>
 
-    <div class="forgot">Esqueceu a senha? <a href="#">Clique aqui</a></div>
-    <div class="linkline">Não tem conta? <a href="#" id="openSignup">Criar conta</a></div>
+      <form id="loginForm">
+        <input class="input" id="telefone" type="tel" placeholder="Telefone" autocomplete="tel">
+        <input class="input" id="senha" type="password" placeholder="Senha" autocomplete="current-password">
+        <button type="button" id="btnLogin" class="login-btn">Login</button>
 
-    <button class="cta" type="button" aria-label="Ver Cardápio">
-      <span>Ver Cardapio</span>
-      <span class="chev" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M9 6l6 6-6 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </span>
-    </button>
-  </section>
+        <div class="social-row">
+          <button type="button" id="btnGoogle" class="social social-google" aria-label="Entrar com Google">
+            <!-- ícone simples Google -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#EA4335" d="M12 10.2v3.6h5.1c-.2 1.2-.8 2.2-1.8 2.9v2.4h2.9c1.7-1.6 2.7-3.9 2.7-6.6 0-.6-.1-1.3-.2-1.9H12z"/><path fill="#34A853" d="M6.5 14.3l-.9.7-2.1 1.6c1.3 2.6 4 4.4 7.1 4.4 2.1 0 3.9-.7 5.2-1.9l-2.5-2c-.7.4-1.5.6-2.7.6-2.1 0-3.9-1.4-4.6-3.4z"/><path fill="#FBBC05" d="M3.5 8.7c-.4 1-.6 2-.6 3.1s.2 2.1.6 3.1c.7 2 2.5 3.4 4.6 3.4.8 0 1.5-.2 2.1-.4l-2.5-2c-.5-.2-.9-.5-1.2-.9z"/><path fill="#4285F4" d="M12 4.5c1.1 0 2 .4 2.7 1.1l2-2C15.9 2.6 14.1 2 12 2 8.9 2 6.2 3.8 4.5 6.3l2.5 2c.7-2 2.5-3.8 5-3.8z"/></svg>
+            Google
+          </button>
+          <button type="button" id="btnFacebook" class="social social-fb" aria-label="Entrar com Facebook">
+            <!-- ícone simples Facebook -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M22 12.07C22 6.48 17.52 2 11.93 2S2 6.48 2 12.07c0 4.99 3.66 9.13 8.44 9.93v-7.04H8.19v-2.9h2.26V9.41c0-2.23 1.33-3.46 3.36-3.46.97 0 1.98.17 1.98.17v2.17h-1.11c-1.09 0-1.43.68-1.43 1.38v1.65h2.43l-.39 2.9h-2.04v7.04C18.34 21.2 22 17.06 22 12.07z" fill="currentColor"/></svg>
+            Facebook
+          </button>
+        </div>
 
-  <!-- Overlay: sucesso do login -->
-  <div id="loginOk" class="overlay" aria-hidden="true">
-    <div class="modal">
-      <div class="ok">✓</div>
-      <h3>Login realizado com sucesso</h3>
-      <p>Você será redirecionado para a página principal.</p>
-    </div>
+        <div class="links">Esqueceu a senha? <a href="#">Clique aqui</a></div>
+
+        <div class="cta">
+          <button class="cta-button" id="ver-cardapio">Ver Cardápio →</button>
+          <button type="button" id="abrirCadastro" class="create-account">Criar conta</button>
+        </div>
+      </form>
+    </aside>
   </div>
 
-  <!-- Modal: cadastro -->
-  <div id="signupOverlay" class="overlay" role="dialog" aria-modal="true">
-    <div class="signup">
-      <a class="xclose" href="#" id="closeSignup" aria-label="Fechar">×</a>
-      <h3>CRIAR CONTA</h3>
-      <p class="lead">Preencha os campos abaixo para criar sua conta e continuar.</p>
-      <form id="signupForm" class="sgrid" action="#" novalidate>
-        <input class="sfield" id="snome" type="text" name="nome" placeholder="Nome completo" required>
-        <input class="sfield" id="stel" type="tel" name="telefone" placeholder="Telefone" required>
-        <div id="stelHelp" class="shelp">O telefone preenchido está incorreto.</div>
-        <input class="sfield" id="semail" type="email" name="email" placeholder="E-mail" required>
-        <input class="sfield" id="ssenha" type="password" name="senha" placeholder="Senha" minlength="6" required>
-        <button class="btn-amber" type="submit">Continuar</button>
+  <!-- Modal Criar Conta -->
+  <div class="overlay" id="cadastroModal" aria-hidden="true">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <div class="close" id="fecharCadastro" aria-label="Fechar">×</div>
+      <h3 id="modalTitle">CRIAR CONTA</h3>
+      <p>Preencha os campos abaixo para criar sua conta e continuar.</p>
+      <form id="formCadastro">
+        <input class="input" name="nome" type="text" placeholder="Nome completo" required>
+        <input class="input" name="telefone" type="tel" placeholder="Telefone" required>
+        <input class="input" name="email" type="email" placeholder="E-mail" required>
+        <input class="input" name="senha" type="password" placeholder="Senha" required>
+        <button type="submit" class="create-account">Continuar</button>
       </form>
     </div>
   </div>
 
-  <!-- Overlay: sucesso do cadastro -->
-  <div id="signupOk" class="overlay" aria-hidden="true">
-    <div class="modal">
-      <div class="ok">✓</div>
-      <h3>Seu cadastro foi realizado com sucesso.</h3>
-      <p>Você será redirecionado para a página principal.</p>
-    </div>
-  </div>
-
   <script>
-    // ====== Login ======
-    const VALID_PHONE = '11999999999';
-    const VALID_PASS  = '123456';
+    /*
+      openOAuth(provider)
+      -------------------
+      Abre uma janela pop-up para iniciar o fluxo OAuth do provedor escolhido.
+      IMPORTANTE: substitua `url` pela rota do seu backend que inicia o OAuth,
+      por exemplo: https://seusite.com/auth/google
+      O backend deve redirecionar para o provedor e, após sucesso, fechar a janela
+      (ou enviar uma mensagem ao opener via postMessage).
+    */
+    function openOAuth(provider){
+      const url = `/auth/${provider}`; // <-- modificar para seu endpoint real
+      const w = 600, h = 700;
+      const left=(screen.width-w)/2, top=(screen.height-h)/2;
+      const win = window.open(url, 'oauth_'+provider, `width=${w},height=${h},left=${left},top=${top}`);
 
-    const loginForm = document.getElementById('loginForm');
-    const tel = document.getElementById('telefone');
-    const pwd = document.getElementById('senha');
-    const errorMsg = document.getElementById('errorMsg');
-    const loginOk = document.getElementById('loginOk');
-
-    loginForm?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      errorMsg.style.display = 'none';
-      const ok = (tel.value||'').trim() === VALID_PHONE && (pwd.value||'').trim() === VALID_PASS;
-      if(ok){
-        loginOk.style.display = 'flex';
-        setTimeout(()=>{ loginOk.style.display = 'none'; /* window.location.href = '#/home'; */ }, 1800);
-      }else{
-        errorMsg.style.display = 'block';
-        pwd.focus();
-      }
-    });
-
-    // ====== Cadastro ======
-    const openSignup  = document.getElementById('openSignup');
-    const closeSignup = document.getElementById('closeSignup');
-    const signupOv    = document.getElementById('signupOverlay');
-    const signupForm  = document.getElementById('signupForm');
-    const signupOk    = document.getElementById('signupOk');
-    const stel        = document.getElementById('stel');
-    const stelHelp    = document.getElementById('stelHelp');
-
-    openSignup?.addEventListener('click', (e)=>{ e.preventDefault(); signupOv.style.display = 'flex'; });
-    closeSignup?.addEventListener('click', (e)=>{ e.preventDefault(); signupOv.style.display = 'none'; });
-    signupOv?.addEventListener('click', (e)=>{ if(e.target === signupOv) signupOv.style.display = 'none'; });
-
-    function maskPhone(v){
-      v = v.replace(/\D/g, '');
-      if(v.length > 11) v = v.slice(0,11);
-      if(v.length > 6){
-        return `(${v.slice(0,2)}) ${v.slice(2,7)}-${v.slice(7)}`;
-      } else if(v.length > 2){
-        return `(${v.slice(0,2)}) ${v.slice(2)}`;
-      } else if(v.length > 0){
-        return `(${v}`;
-      }
-      return v;
+      // Polling simples: detecta quando o popup foi fechado. Em produção
+      // prefira receber um postMessage do popup com o resultado.
+      const timer = setInterval(()=>{
+        if(!win || win.closed){
+          clearInterval(timer);
+          // aqui você deveria verificar com o backend se o login foi concluído (fetch)
+          alert(provider + ' — popup fechado (simulação).');
+        }
+      }, 500);
     }
 
-    stel?.addEventListener('input', ()=>{ stel.value = maskPhone(stel.value); });
+    // IDs dos botões/elementos existem no markup acima
+    document.getElementById('btnGoogle').addEventListener('click', ()=>openOAuth('google'));
+    document.getElementById('btnFacebook').addEventListener('click', ()=>openOAuth('facebook'));
 
-    function isValidBrPhone(text){
-      // (xx) xxxxx-xxxx
-      return /^\(\d{2}\) \d{5}-\d{4}$/.test(text);
-    }
+    // Redirecionamento para o cardápio (exemplo): modificar conforme sua navegação
+    document.getElementById('ver-cardapio').addEventListener('click', ()=>{ window.location.href = '/cardapio.html'; });
 
-    signupForm?.addEventListener('submit', (e)=>{
-      e.preventDefault();
-      const phone = (stel.value||'').trim();
-      const ok = isValidBrPhone(phone);
-      if(!ok){
-        stel.classList.add('invalid');
-        stelHelp.classList.add('show');
-        stel.focus();
+    // Login simulado (substituir por fetch/axios para autenticar no backend)
+    document.getElementById('btnLogin').addEventListener('click', ()=>{
+      const tel = document.getElementById('telefone').value.trim();
+      const pwd = document.getElementById('senha').value.trim();
+      // Exemplo: validação mínima no front
+      if(!tel || !pwd){
+        alert('Preencha telefone e senha.');
         return;
       }
-      stel.classList.remove('invalid');
-      stelHelp.classList.remove('show');
+      alert('Login simulado. Substitua por chamada ao seu backend.');
+    });
 
-      // sucesso de cadastro
-      signupOv.style.display = 'none';
-      signupOk.style.display = 'flex';
-      setTimeout(()=>{ signupOk.style.display = 'none'; /* window.location.href = '#/home'; */ }, 1800);
+    /* Modal de cadastro: abertura/fechamento e submissão do formulário (simulado)
+       - Em produção valide os campos no backend
+       - Considere adicionar um spinner/feedback enquanto o backend processa
+    */
+    const cadastroModal = document.getElementById('cadastroModal');
+    const abrirCadastroBtn = document.getElementById('abrirCadastro');
+    const fecharCadastroBtn = document.getElementById('fecharCadastro');
+    const formCadastro = document.getElementById('formCadastro');
+
+    abrirCadastroBtn.addEventListener('click', ()=>{
+      cadastroModal.classList.add('show');
+      cadastroModal.style.display = 'flex';
+      cadastroModal.setAttribute('aria-hidden','false');
+      // força a transição para a modal (pequena timeout para aplicar a animação)
+      setTimeout(()=>cadastroModal.querySelector('.modal').style.transform = 'translateY(0)', 20);
+    });
+
+    function closeModal(){
+      cadastroModal.classList.remove('show');
+      cadastroModal.style.display = 'none';
+      cadastroModal.setAttribute('aria-hidden','true');
+      cadastroModal.querySelector('.modal').style.transform = 'translateY(-8px)';
+    }
+
+    fecharCadastroBtn.addEventListener('click', closeModal);
+    cadastroModal.addEventListener('click', e => { if(e.target === cadastroModal) closeModal(); });
+
+    formCadastro.addEventListener('submit', e => {
+      e.preventDefault();
+      // Aqui você pegará os valores e chamará seu endpoint de cadastro (fetch/axios)
+      alert('Cadastro simulado com sucesso!');
+      closeModal();
     });
   </script>
 </body>
 </html>
-
-
